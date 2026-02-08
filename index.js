@@ -5,10 +5,19 @@ const http = require('http');
 const url = require('url');
 const environment = require('./helpers/environments')
 const {handleReqRes} = require('./helpers/handlereqres');
+const data = require('./lib/data');
+
+
+
 
 //app object - module scaffolding
 const app = {};
-//configuration
+//pore muche felbo
+data.read('test','newFile',(err,data)=>{
+    console.log('this was the error',err);
+    console.log('this was the data',data);
+   
+})
 
 app.createServer = function (handleReqRes) {
        const server = http.createServer(handleReqRes);
