@@ -25,15 +25,7 @@ handeler.handleReqRes = function (req,res){
 
 
     const chosenHandeler = routes[trimmedPath] ? routes[trimmedPath] : routes['notFound'];
-     chosenHandeler(requestProperties, (statusCode, payload) => {
-        statatusCode = typeof(statusCode) === 'number' ? statusCode : 500;
-        payload = typeof(payload) === 'object' ? payload : {};
-        const payloadString = JSON.stringify(payload);
-        res.setHeader('Content-Type', 'application/json');
-        res.writeHead(statatusCode);
-        res.end(payloadString);
-
-    })
+    
 
 
     req.on('data', (buffer)=> {
@@ -41,9 +33,17 @@ handeler.handleReqRes = function (req,res){
     })
     req.on('end', () => {
         realData += decoder.end();
-        console.log(realData);  
+         chosenHandeler(requestProperties, (statusCode, payload) => {
+        statatusCode = typeof(statusCode) === 'number' ? statusCode : 500;
+        payload = typeof(payload) === 'object' ? payload : {};
+        const payloadString = JSON.stringify(payload);
+        res.setHeader('Content-Type', 'application/json');
+        res.writeHead(statatusCode);
+        res.end(payloadString);
+
+    }) 
         
-    }
+    })
 
  }
 module.exports = handeler;
