@@ -37,7 +37,9 @@ handeler.handleReqRes = function (req,res){
         statatusCode = typeof(statusCode) === 'number' ? statusCode : 500;
         payload = typeof(payload) === 'object' ? payload : {};
         const payloadString = JSON.stringify(payload);
-        res.setHeader('Content-Type', 'application/json');
+
+        //return final response
+        res.setHeader('Content-Type', 'application/json');  
         res.writeHead(statatusCode);
         res.end(payloadString);
 
