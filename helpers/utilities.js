@@ -4,6 +4,7 @@
 
 //scaholding
 const utilities = {};
+const cryqpto = require('crypto');
 
 utilities.parseJson = (jsonString)=>{
     let output;
@@ -13,6 +14,14 @@ utilities.parseJson = (jsonString)=>{
         output = {};
     }
     return output;
+}
+utilities.hash = (str)=>{
+    if(typeof(str) === 'string' && str.length > 0){
+        const hash = cryqpto.createHmac('sha256', 'thisIsASecretKey').update(str).digest('hex');
+        return hash;
+    }else{
+        return false;
+    }
 }
 
 module.exports = utilities;

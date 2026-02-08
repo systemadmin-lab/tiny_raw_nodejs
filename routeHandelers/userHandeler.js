@@ -2,7 +2,8 @@
 // Discription:handle user related routes
 // Author:Rejuan_Anik
 
-
+//dependencies
+const data = require('../lib/data');
 
 
 // module scafholding
@@ -31,9 +32,36 @@ handler._users.post = (requestProperties,callback)=>{
       const tosAgreement =typeof(requestProperties.body.tosAgreement)=== 'boolean' && requestProperties.body.tosAgreement === true ? requestProperties.body.tosAgreement : false;
 
       if(first_name && last_name && phone && password && tosAgreement){
-        callback(200, {
-            'message': 'user created successfully'
-        })
+        //make sure that the user already exists
+        data.read('users', phone, (err, udata)=>{
+            if(err){
+                //user not exists, create one
+                const userObject = {
+                    first_name,
+                    last_name,
+                    phone,
+                    password,
+                    tosAgreement
+                };
+                //store the user to database
+                data.create('users', phone, userObject, (err)=>{
+                    if(!err){
+                        callback(200, {
+                            'message': 'user was created successfully'
+                        })
+                    }else{
+                        callback(500, {
+                            'error': 'could not create user'
+                        })
+                    }
+                })
+            }else{
+                callback(400, {
+                    'error': 'a user with that phone number already exists'
+                })
+            }
+        })      
+
       }else{
         callback(400, {
             'error': 'there is an error in your request'
