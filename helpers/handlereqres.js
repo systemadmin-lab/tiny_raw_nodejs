@@ -43,7 +43,7 @@ handeler.handleReqRes = function (req,res){
         realData += decoder.end();
         console.log(realData);  
         
-    })
+    }
 
  }
 module.exports = handeler;

@@ -2,8 +2,10 @@
 // description:handle request and response
 // Author:Rejuan_Anik
 
-const {sampleHandelers} =require('./routeHandelers/samplehandler');
+const {sampleHandler} =require('./routeHandelers/samplehandler');
+const { notFoundHandler } = require('./routeHandelers/notFoundHandler');
 const routes = {
-    'sample': sampleHandelers
+    'sample': sampleHandler,
+    'notFound': notFoundHandler
 };
 module.exports = routes;
