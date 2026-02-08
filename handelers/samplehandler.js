@@ -1,0 +1,2 @@
+// module scafholding
+const sampleHandler = {};
