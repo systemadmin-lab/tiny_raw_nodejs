@@ -1,6 +1,7 @@
 const url = require('url');
 const { StringDecoder } = require('string_decoder');
 const routes = require('../route');
+const {parseJson} = require('../helpers/utilities');
 //app scaffolding
 const handeler = {};
 
@@ -33,6 +34,7 @@ handeler.handleReqRes = function (req,res){
     })
     req.on('end', () => {
         realData += decoder.end();
+        requestProperties.body = parseJson(realData);
          chosenHandeler(requestProperties, (statusCode, payload) => {
         statatusCode = typeof(statusCode) === 'number' ? statusCode : 500;
         payload = typeof(payload) === 'object' ? payload : {};

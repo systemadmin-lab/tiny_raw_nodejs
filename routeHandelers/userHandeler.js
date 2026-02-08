@@ -8,9 +8,54 @@
 // module scafholding
 const handler = {};
 handler.userHandler =(requestProperties,callback)=>{
-    console.log(requestProperties);
+      const acceptedMethods = ['get', 'post', 'put', 'delete'];
+        if(acceptedMethods.indexOf(requestProperties.method) > -1){
+             handler._users[requestProperties.method](requestProperties,callback); 
+        }else{
+            callback(405);
+        }
+    
    callback(200, {
       'message': 'this is a user response'
    })
 }
+
+handler._users = {};
+
+
+handler._users.post = (requestProperties,callback)=>{
+     const first_name =typeof(requestProperties.body.firstname)=== 'string' && requestProperties.body.firstname.trim().length > 0 ? requestProperties.body.firstname : false;
+      const last_name =typeof(requestProperties.body.lastname)=== 'string' && requestProperties.body.lastname.trim().length > 0 ? requestProperties.body.lastname : false;
+      const phone =typeof(requestProperties.body.phone)=== 'string' && requestProperties.body.phone.trim().length === 11 ? requestProperties.body.phone : false;
+      const password =typeof(requestProperties.body.password)=== 'string' && requestProperties.body.password.trim().length > 0 ? requestProperties.body.password : false;
+      const tosAgreement =typeof(requestProperties.body.tosAgreement)=== 'boolean' && requestProperties.body.tosAgreement === true ? requestProperties.body.tosAgreement : false;
+
+      if(first_name && last_name && phone && password && tosAgreement){
+        callback(200, {
+            'message': 'user created successfully'
+        })
+      }else{
+        callback(400, {
+            'error': 'there is an error in your request'
+        })
+      }
+};
+handler._users.get = (requestProperties,callback)=>{
+    callback(200, {
+        'message': 'you are using get method'
+    })
+}
+handler._users.put = (requestProperties,callback)=>{
+    callback(200, {
+        'message': 'you are using put method'
+    })
+}
+handler._users.delete = (requestProperties,callback)=>{
+    callback(200, {
+        'message': 'you are using delete method'
+    })
+}
+
+
+
 module.exports = handler;
