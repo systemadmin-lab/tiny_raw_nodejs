@@ -1,6 +1,6 @@
-# ⚡ Tiny Raw Node.js: Uptime Monitoring API
+#⚡ Tiny Raw Node.js: Uptime Monitoring API
 
-<p align="center">
+<p>
   <img src="https://img.shields.io/badge/Node.js-LTS-green?style=for-the-badge&logo=node.js" alt="Node.js Badge">
   <img src="https://img.shields.io/badge/Status-Ongoing-orange?style=for-the-badge" alt="Status Badge">
   <img src="https://img.shields.io/badge/Framework-None%20(Raw)-red?style=for-the-badge" alt="No Framework Badge">
