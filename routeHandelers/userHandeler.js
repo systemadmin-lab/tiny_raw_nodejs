@@ -203,8 +203,14 @@ handler._users.delete = (requestProperties, callback) => {
     requestProperties.queryString.phone.trim().length === 11
       ? requestProperties.queryString.phone
       : false;
+ let token =
+    typeof requestProperties.headersObject.token === "string"
+      ? requestProperties.headersObject.token
+      : false;
     
-  if (phone) {
+  tokenHandeler._tokens.verify(token, phone, (tokenIsValid) => {  
+    if (tokenIsValid) {
+         if (phone) {
     data.delete("users", phone, (err) => {
       if (!err) {
         callback(200, {
@@ -216,11 +222,15 @@ handler._users.delete = (requestProperties, callback) => {
         });
       }
     });
-  } else {
-    callback(400, {
-      error: "there is an error in your request",
-    });
   }
+    }
+    else{
+      callback(403, {
+        error: "authentication failure",
+      });
+    } 
+})
+ 
 };
 
 module.exports = handler;
