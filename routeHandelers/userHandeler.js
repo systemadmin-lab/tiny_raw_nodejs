@@ -68,15 +68,70 @@ handler._users.post = (requestProperties,callback)=>{
       }
 };
 handler._users.get = (requestProperties,callback)=>{
-    callback(200, {
-        'message': 'you are using get method'
-    })
+    const phone =typeof(requestProperties.queryString.phone) === 'string' && requestProperties.queryString.phone.trim().length === 11 ? requestProperties.queryString.phone : false;
+     if(phone){
+        //lookup the user
+        data.read('users', phone, (err, udata)=>{
+            if(!err && udata){
+                delete udata.password;
+                callback(200, udata);
+            }else{
+                callback(404, {
+                    'error': 'user not found'
+                })
+            }
+        })
+     }else{
+        callback(400, {
+            'error': 'there is an error in your request'
+        })
+     }   
 }
+
 handler._users.put = (requestProperties,callback)=>{
-    callback(200, {
-        'message': 'you are using put method'
-    })
+     const phone =typeof(requestProperties.body.phone) === 'string' && requestProperties.body.phone.trim().length === 11 ? requestProperties.body.phone : false;
+      const first_name =typeof(requestProperties.body.firstname)=== 'string' && requestProperties.body.firstname.trim().length > 0 ? requestProperties.body.firstname : false;
+      const last_name =typeof(requestProperties.body.lastname)=== 'string' && requestProperties.body.lastname.trim().length > 0 ? requestProperties.body.lastname : false;
+      const password =typeof(requestProperties.body.password)=== 'string' && requestProperties.body.password.trim().length > 0 ? requestProperties.body.password : false;
+      if(phone){
+        //lookup the user
+        data.read('users', phone, (err, udata)=>{
+            if(!err && udata){
+                //update the user data
+                if(first_name){
+                    udata.first_name = first_name;
+                }
+                if(last_name){
+                    udata.last_name = last_name;
+                }
+                if(password){
+                    udata.password = hash(password);
+                }
+                //store the updated data to database
+                data.update('users', phone, udata, (err)=>{
+                    if(!err){
+                        callback(200, {
+                            'message': 'user was updated successfully'
+                        })
+                    }else{
+                        callback(500, {
+                            'error': 'could not update the user'
+                        })
+                    }
+                })
+            }else{
+                callback(400, {
+                    'error': 'the specified user does not exist'
+                })
+            }
+        })
+     }else{
+        callback(400, {
+            'error': 'there is an error in your request'
+        })
+     }   
 }
+    
 handler._users.delete = (requestProperties,callback)=>{
     callback(200, {
         'message': 'you are using delete method'
