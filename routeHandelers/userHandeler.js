@@ -133,9 +133,24 @@ handler._users.put = (requestProperties,callback)=>{
 }
     
 handler._users.delete = (requestProperties,callback)=>{
-    callback(200, {
-        'message': 'you are using delete method'
-    })
+    const phone =typeof(requestProperties.queryString.phone) === 'string' && requestProperties.queryString.phone.trim().length === 11 ? requestProperties.queryString.phone : false;
+        if(phone){  
+            data.delete('users', phone, (err)=>{
+                if(!err){
+                    callback(200, {
+                        'message': 'user was deleted successfully'
+                    })
+                }else{
+                    callback(500, {
+                        'error': 'could not delete the user'
+                    })
+                }
+            })
+        }else{
+            callback(400, {
+                'error': 'there is an error in your request'
+            })
+        }       
 }
 
 
