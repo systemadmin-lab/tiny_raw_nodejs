@@ -4,6 +4,7 @@
 
 //dependencies
 const data = require('../lib/data');
+const {hash} = require('../helpers/utilities');
 
 
 // module scafholding
@@ -16,9 +17,7 @@ handler.userHandler =(requestProperties,callback)=>{
             callback(405);
         }
     
-   callback(200, {
-      'message': 'this is a user response'
-   })
+ 
 }
 
 handler._users = {};
@@ -40,7 +39,7 @@ handler._users.post = (requestProperties,callback)=>{
                     first_name,
                     last_name,
                     phone,
-                    password,
+                    password : hash(password),
                     tosAgreement
                 };
                 //store the user to database
