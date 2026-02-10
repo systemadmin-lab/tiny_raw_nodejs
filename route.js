@@ -6,6 +6,7 @@ const {sampleHandler} =require('./routeHandelers/samplehandler');
 const { notFoundHandler } = require('./routeHandelers/notFoundHandler');
 const { userHandler } = require('./routeHandelers/userHandeler');
 const { tokenHandler } = require('./routeHandelers/tokenHandeler');
+const {checkHandeler} = require('./routeHandelers/checkHandeler');
 const routes = {
     'sample': sampleHandler,
     'user': userHandler,
